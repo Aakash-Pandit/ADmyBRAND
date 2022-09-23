@@ -155,7 +155,7 @@ func TestCreateUserMethod(t *testing.T) {
 
 	r.ServeHTTP(w, req)
 
-	if w.Code == http.StatusOK {
+	if w.Code == http.StatusCreated {
 		t.Logf("Expected to get status %d is same as %d\n", http.StatusOK, w.Code)
 	} else {
 		t.Fatalf("Expected to get status %d but instead got %d\n", http.StatusOK, w.Code)
