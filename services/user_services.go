@@ -1,124 +1,139 @@
 package services
 
 import (
+	"net/http"
+
 	"github.com/Aakash-Pandit/ADmyBRAND/models"
 	"github.com/Aakash-Pandit/ADmyBRAND/storage"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gin-gonic/gin"
 )
 
-func GetUsers(context *fiber.Ctx) error {
+func GetUsers(context *gin.Context) {
 	users := &[]models.User{}
 
 	db := storage.GetDatabase()
 	err := db.Find(users).Error
 	if err != nil {
-		return context.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+		context.JSON(http.StatusBadRequest, gin.H{
 			"detail": err.Error(),
 		})
+		return
 	}
 
-	return context.Status(fiber.StatusOK).JSON(users)
+	context.JSON(http.StatusOK, users)
 }
 
-func GetUserByID(context *fiber.Ctx) error {
-	id := context.Params("id")
+func GetUserByID(context *gin.Context) {
+	id, _ := context.Params.Get("id")
 	user := &models.User{}
 
 	db := storage.GetDatabase()
 	err := db.Where("id = ?", id).First(user).Error
 	if err != nil {
-		return context.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+		context.JSON(http.StatusBadRequest, gin.H{
 			"detail": err.Error(),
 		})
+		return
 	}
 
-	return context.Status(fiber.StatusOK).JSON(user)
+	context.JSON(http.StatusOK, user)
 }
 
-func CreateUser(context *fiber.Ctx) error {
+func CreateUser(context *gin.Context) {
 
 	db := storage.GetDatabase()
 	user := &models.User{}
 
-	err := context.BodyParser(user)
+	err := context.BindJSON(user)
 	if err != nil {
-		return context.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+		context.JSON(http.StatusBadRequest, gin.H{
 			"detail": err.Error(),
 		})
+		return
 	}
 
 	errors := models.ValidateUserStruct(*user)
 
 	if errors != nil {
-		return context.Status(fiber.StatusBadRequest).JSON(errors)
+		context.JSON(http.StatusBadRequest, gin.H{
+			"detail": errors,
+		})
+		return
 	}
 
 	err = db.Create(user).Error
 	if err != nil {
-		return context.Status(fiber.StatusBadRequest).JSON(&fiber.Map{
+		context.JSON(http.StatusBadRequest, gin.H{
 			"detail": err.Error(),
 		})
+		return
 	}
 
-	return context.Status(fiber.StatusOK).JSON(user)
+	context.JSON(http.StatusOK, user)
 }
 
-func UpdateUser(context *fiber.Ctx) error {
-	id := context.Params("id")
+func UpdateUser(context *gin.Context) {
+	id, _ := context.Params.Get("id")
 	if id == "" {
-		context.Status(fiber.StatusInternalServerError).JSON(&fiber.Map{
-			"message": "id cannot be empty",
+		context.JSON(http.StatusBadRequest, gin.H{
+			"detail": "id cannot be empty",
 		})
-		return nil
+		return
 	}
 
 	user := &models.User{}
 
-	err := context.BodyParser(&user)
+	err := context.BindJSON(user)
 	if err != nil {
-		return context.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+		context.JSON(http.StatusBadRequest, gin.H{
 			"detail": err.Error(),
 		})
+		return
 	}
 
 	errors := models.ValidateUserStruct(*user)
 
 	if errors != nil {
-		return context.Status(fiber.StatusBadRequest).JSON(errors)
+		context.JSON(http.StatusBadRequest, gin.H{
+			"detail": errors,
+		})
+		return
 	}
 
 	db := storage.GetDatabase()
 
 	err = db.Where("id = ?", id).Updates(user).Error
 	if err != nil {
-		return context.Status(fiber.StatusBadRequest).JSON(&fiber.Map{
+		context.JSON(http.StatusBadRequest, gin.H{
 			"detail": err.Error(),
 		})
+		return
 	}
 
 	_ = db.Where("id = ?", id).First(user).Error
-	return context.Status(fiber.StatusOK).JSON(user)
+	context.JSON(http.StatusOK, user)
 }
 
-func DeleteUser(context *fiber.Ctx) error {
+func DeleteUser(context *gin.Context) {
 	user := &models.User{}
-	id := context.Params("id")
+	id, _ := context.Params.Get("id")
 	if id == "" {
-		context.Status(fiber.StatusInternalServerError).JSON(&fiber.Map{
-			"message": "id cannot be empty",
+		context.JSON(http.StatusBadRequest, gin.H{
+			"detail": "id cannot be empty",
 		})
-		return nil
+		return
 	}
 
 	db := storage.GetDatabase()
 	err := db.Where("id = ?", id).First(user).Error
 	if err != nil {
-		return context.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+		context.JSON(http.StatusBadRequest, gin.H{
 			"detail": err.Error(),
 		})
+		return
 	}
 
 	db.Where("id = ?", id).Delete(user)
 
-	return context.Status(fiber.StatusNoContent).JSON(&fiber.Map{})
+	context.JSON(http.StatusNoContent, gin.H{})
 }

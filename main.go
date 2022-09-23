@@ -5,8 +5,7 @@ import (
 
 	"github.com/Aakash-Pandit/ADmyBRAND/routes"
 	"github.com/Aakash-Pandit/ADmyBRAND/storage"
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -16,10 +15,7 @@ func main() {
 		log.Fatal("could not load database")
 	}
 
-	app := fiber.New()
-	app.Use("", logger.New())
-
-	routes.SetupRoutes(app)
-
-	app.Listen(":8080")
+	route := gin.Default()
+	routes.SetupRoutes(route)
+	route.Run()
 }
