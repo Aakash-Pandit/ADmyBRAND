@@ -1,0 +1,199 @@
+---
+openapi: 3.0.0
+info:
+  title: API-Documentation
+  description: Welcome to User Api Documentation
+  termsOfService: http://localhost:8000/doc
+  contact:
+    name: Aakash Pandit
+    url: https://aakash-pandit-portfolio.netlify.app/
+    email: aakashpandit366@gmail.com
+  version: v1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/Aakash-Pandit/API-Documentation/v1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: http://localhost:8080/docs
+  description: Deployement Server
+tags:
+- name: User
+paths:
+  /users:
+    get:
+      tags:
+      - User
+      description: Users
+      operationId: get_all_user
+      responses:
+        "200":
+          description: User is created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/user'
+    post:
+      tags:
+      - User
+      description: Create User
+      operationId: create_user
+      parameters:
+      - name: name
+        in: query
+        description: name
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: name
+      - name: date_of_birth
+        in: query
+        description: date_of_birth
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: date_of_birth
+      - name: address
+        in: query
+        description: address
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: address
+      - name: description
+        in: query
+        description: description
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: description
+      responses:
+        "201":
+          description: User is created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+  /users/{id}:
+    get:
+      tags:
+      - User
+      description: Get User
+      operationId: get_user
+      parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: a6d20570-31f6-4ad2-add0-5ac6f05436f2
+      responses:
+        "200":
+          description: User is created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+    delete:
+      tags:
+      - User
+      description: Delete User
+      operationId: delete_user
+      parameters:
+      - name: id
+        in: path
+        description: id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: a6d20570-31f6-4ad2-add0-5ac6f05436f2
+      responses:
+        "204":
+          description: User is deleted
+          content:
+            application/json: {}
+    patch:
+      tags:
+      - User
+      description: Update User
+      operationId: update_user
+      parameters:
+      - name: id
+        in: path
+        description: name
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: name
+      - name: date_of_birth
+        in: query
+        description: date_of_birth
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: date_of_birth
+      - name: address
+        in: query
+        description: address
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: address
+      - name: description
+        in: query
+        description: description
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: description
+      responses:
+        "200":
+          description: User is created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+components:
+  schemas:
+    user:
+      type: object
+      properties:
+        id:
+          type: string
+          example: a6d20570-31f6-4ad2-add0-5ac6f05436f2
+        name:
+          type: string
+          example: Jake Cruise
+        date_of_birth:
+          type: string
+          example: 1990-01-01
+        address:
+          type: string
+          example: washington D.C.
+        description:
+          type: string
+          example: This is description
+        created_at:
+          type: string
+          example: 2022-09-21T07:06:16.399964869+05:30
+      description: Schema frc User
