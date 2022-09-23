@@ -16,7 +16,7 @@ func ApiDoc(context *gin.Context) {
 }
 
 func SetupRoutes(app *gin.Engine) {
-	app.GET("/docs/", ApiDoc)
+	app.GET("/docs", ApiDoc)
 
 	api := app.Group("/api/v1")
 	api.GET("", ApiHome)
