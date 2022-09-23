@@ -69,7 +69,7 @@ func CreateUserHandler(context *gin.Context) {
 		return
 	}
 
-	context.JSON(http.StatusOK, user)
+	context.JSON(http.StatusCreated, user)
 }
 
 func UpdateUserHandler(context *gin.Context) {
