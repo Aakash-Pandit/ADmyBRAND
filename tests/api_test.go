@@ -93,7 +93,7 @@ func TestGetAllUsersMethod(t *testing.T) {
 
 	route := "/api/v1/users/"
 	r := gin.Default()
-	r.GET(route, services.GetUsers)
+	r.GET(route, services.GetUsersHandler)
 
 	req, err := http.NewRequest(http.MethodGet, route, nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func TestGetUserMethod(t *testing.T) {
 
 	route := "/api/v1/users/"
 	r := gin.Default()
-	r.GET(route+":id/", services.GetUserByID)
+	r.GET(route+":id/", services.GetUserByIDHandler)
 
 	req, err := http.NewRequest(http.MethodGet, route+id, nil)
 	if err != nil {
@@ -144,7 +144,7 @@ func TestCreateUserMethod(t *testing.T) {
 
 	route := "/api/v1/users/"
 	r := gin.Default()
-	r.POST(route, services.CreateUser)
+	r.POST(route, services.CreateUserHandler)
 
 	req, err := http.NewRequest(http.MethodPost, route, strings.NewReader(CreateMockPayload()))
 	if err != nil {
@@ -170,7 +170,7 @@ func TestUpdateUserMethod(t *testing.T) {
 
 	route := "/api/v1/users/"
 	r := gin.Default()
-	r.PATCH(route+":id/", services.UpdateUser)
+	r.PATCH(route+":id/", services.UpdateUserHandler)
 
 	req, err := http.NewRequest(http.MethodPatch, route+id, strings.NewReader(CreateMockPayload()))
 	if err != nil {
@@ -196,7 +196,7 @@ func TestDeleteUserMethod(t *testing.T) {
 
 	route := "/api/v1/users/"
 	r := gin.Default()
-	r.DELETE(route+":id/", services.DeleteUser)
+	r.DELETE(route+":id/", services.DeleteUserHandler)
 
 	req, err := http.NewRequest(http.MethodDelete, route+id, nil)
 	if err != nil {

@@ -18,9 +18,9 @@ func SetupRoutes(app *gin.Engine) {
 	api := app.Group("/api/v1")
 	api.GET("", ApiHome)
 
-	api.GET("/users", services.GetUsers)
-	api.GET("/users/:id", services.GetUserByID)
-	api.POST("/users", services.CreateUser)
-	api.PATCH("/users/:id", services.UpdateUser)
-	api.DELETE("/users/:id", services.DeleteUser)
+	api.GET("/users", services.GetUsersHandler)
+	api.GET("/users/:id", services.GetUserByIDHandler)
+	api.POST("/users", services.CreateUserHandler)
+	api.PATCH("/users/:id", services.UpdateUserHandler)
+	api.DELETE("/users/:id", services.DeleteUserHandler)
 }

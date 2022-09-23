@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetUsers(context *gin.Context) {
+func GetUsersHandler(context *gin.Context) {
 	users := &[]models.User{}
 
 	db := storage.GetDatabase()
@@ -23,7 +23,7 @@ func GetUsers(context *gin.Context) {
 	context.JSON(http.StatusOK, users)
 }
 
-func GetUserByID(context *gin.Context) {
+func GetUserByIDHandler(context *gin.Context) {
 	id, _ := context.Params.Get("id")
 	user := &models.User{}
 
@@ -39,7 +39,7 @@ func GetUserByID(context *gin.Context) {
 	context.JSON(http.StatusOK, user)
 }
 
-func CreateUser(context *gin.Context) {
+func CreateUserHandler(context *gin.Context) {
 
 	db := storage.GetDatabase()
 	user := &models.User{}
@@ -72,7 +72,7 @@ func CreateUser(context *gin.Context) {
 	context.JSON(http.StatusOK, user)
 }
 
-func UpdateUser(context *gin.Context) {
+func UpdateUserHandler(context *gin.Context) {
 	id, _ := context.Params.Get("id")
 	if id == "" {
 		context.JSON(http.StatusBadRequest, gin.H{
@@ -114,7 +114,7 @@ func UpdateUser(context *gin.Context) {
 	context.JSON(http.StatusOK, user)
 }
 
-func DeleteUser(context *gin.Context) {
+func DeleteUserHandler(context *gin.Context) {
 	user := &models.User{}
 	id, _ := context.Params.Get("id")
 	if id == "" {
