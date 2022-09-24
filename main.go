@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"net/http"
 
 	"github.com/Aakash-Pandit/ADmyBRAND/routes"
 	"github.com/Aakash-Pandit/ADmyBRAND/storage"
@@ -10,10 +9,6 @@ import (
 	"github.com/mvrilo/go-redoc"
 	ginredoc "github.com/mvrilo/go-redoc/gin"
 )
-
-func ApiDoc(context *gin.Context) {
-	context.HTML(http.StatusOK, "index.html", gin.H{})
-}
 
 func main() {
 
